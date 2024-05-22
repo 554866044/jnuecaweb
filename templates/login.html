@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/login.css')}}">
+</head>
+
+<body>
+    <div class="contect">
+        <div class="login-wrapper">
+            <div class="left-img">
+                <div class="glass">
+                    <div class="tips">
+                        <div class="title">
+                            JNUECA
+                        </div>
+                        <h3>Explore The Universe</h3>
+                        <span>Life isn't about waiting for the storm to pass.</span>
+                        <br>
+                        <span>The minute you think of giving up.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="right-login-form">
+                <div class="form-wrapper">
+                    <form method="post">
+                        <h3>Login In</h3>
+                        <div class="input-items">
+                            <div class="input-tips">手机号</div>
+                            <input type="text" class="inputs" name=phone placeholder="手机号注册/登录" id="mobile" oninput="checkMobile()"
+                                maxlength="11">
+                            <div class="warn" id="mobileTip"></div>
+                        </div>
+                        <div class="input-items">
+                            <div class="input-tips">密码</div>
+                            <div class="input-inner">
+                                <input type="text" class="inputs" name=password placeholder="密码" id="code" oninput="checkCode()"
+                                    maxlength="4" style="width: 60%;">
+                                <div class="input-inner-btn">
+                                    <div class="code">
+                                        <a href="#" id="codeMsg" onclick="getCode()">获取验证码</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="warn" id="codeTip"></div>
+                        </div>
+                        <div class="register-bar">
+                            <span class="meet-problems">登录遇到问题？</span>
+                            <a href="#" class="to-register">立即注册</a>
+                        </div>
+                        <div class="btn">
+                            <button class="button special" id="sub" onclick="regF()">登录</button>
+                        </div>
+                        <p class="login-tip">
+                            <span>未注册的手机验证后将自动登录。注册/登录即代表您同意并遵守</span>
+                            <a href="#">《jnueca用户服务协议》</a>
+                            <a href="#">《jnueca用户个人信息及隐私保护政策》</a>
+                    </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let flag = false;
+        let sec = 61;
+
+        // 手机号验证
+        function checkMobile() {
+            let mobileDom = document.getElementById("mobile");
+            let mobile = mobileDom.value;
+            let mobileTip = document.getElementById("mobileTip");
+            if (!mobile) {
+                mobileDom.style.borderColor = "#e44c65";
+                mobileTip.innerText = "请输入手机号";
+                return false;
+            }
+            let myReg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+            if (!myReg.test(mobile)) {
+                mobileDom.style.borderColor = "#e44c65";
+                mobileTip.innerText = "手机号格式错误";
+                return false;
+            } else {
+                mobileDom.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                mobileTip.innerText = "";
+                return true;
+            }
+        }
+
+        // 获取验证码
+        function getCode() {
+            if (flag) {
+                return;
+            }
+            let ifMobile = checkMobile();
+            if (!ifMobile) {
+                return;
+            }
+            let = codeMsg = document.getElementById("codeMsg");
+            codeMsg.innerText = "60s";
+            countF();
+        }
+
+        //倒计时
+        function countF() {
+            flag = true;
+            sec--;
+            let codeMsg = document.getElementById("codeMsg");
+            codeMsg.innerText = sec + "s";
+            setTimeout(function () {
+                if (sec == 0) {
+                    codeMsg.innerText = "重新获取";
+                    flag = false;
+                    sec = 61;
+                } else {
+                    countF();
+                }
+            }, 1000)
+        }
+
+        //校验验证码
+        function checkCode() {
+            let ifMobile = checkMobile();
+            if (!ifMobile) {
+                return;
+            }
+            let codeDom = document.getElementById("code");
+            let code = codeDom.value;
+            let codeTip = document.getElementById("codeTip");
+            if (!code) {
+                codeDom.style.borderColor = "#e44c65";
+                codeTip.innerText = "请输入验证码";
+                return false;
+            } else {
+                codeDom.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                codeTip.innerText = "";
+                return true;
+            }
+        }
+
+        //登录
+        function regF() {
+            if (checkMobile() && checkCode()) {
+                alert("登录成功");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

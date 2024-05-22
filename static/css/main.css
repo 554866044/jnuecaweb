@@ -63,7 +63,7 @@ textarea {
     min-height: 300px;
     padding: 2em 0 4em 0;
     height: 10vh;
-    background: url(./image/index/2.jpg) bottom center;
+    background: url(../img/2.jpg) bottom center;
     background-size: cover;
     background-attachment: fixed;
     box-shadow: 0 0 15px #e44c65;

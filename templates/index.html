@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
 
     <!-- Scripts -->
-    <script src="./js/jquery.min.js"></script>
-    <script src="./js/jquery.scrolly.min.js"></script>
-    <script src="./js/jquery.dropotron.min.js"></script>
-    <script src="./js/jquery.scrollex.min.js"></script>
-    <script src="./js/skel.min.js"></script>
-    <script src="./js/util.js"></script>
-    <script src="./js/main.js"></script>
+    <script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.scrolly.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.dropotron.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.scrollex.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/skel.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/util.js')}}"></script>
+    <script src="{{url_for('static',filename='js/main.js')}}"></script>
 </head>
 
 <body class="landing">
@@ -29,9 +29,9 @@
             <nav id="nav">
                 <ul>
                     <li><a href="./index.html">首页</a></li>
-                    <li><a href="#" onclick="a('/detail.html')">详情</a></li>
+                    <li><a href="#" onclick="a('/detail.html')">GAME</a></li>
                     <li><a href="#" onclick="a('./persional.html')">个人中心</a></li>
-                    <li><a href="#" class="button special" onclick="a('/login.html')">登录</a></li>
+                    <li><a href="/login" class="button special">登录</a></li>
                 </ul>
             </nav>
         </header>
@@ -47,13 +47,13 @@
             <div class="content">
                 <span class="image">
                     <div class="img-content">
-                        <img src="./image/index/头像.jpg" alt="这是我们" />
+                        <img src="{{url_for('static',filename='img/R.jpg')}}" alt="这是我们" />
                     </div>
                 </span>
                 <header>
-                    <h2>派小星の泡芙</h2>
-                    <p>千里之行，始于足下！
-                        <br>我才不要那么没用！！
+                    <h2>暨南大学电子商务协会论坛</h2>
+                    <p>忠信笃敬
+                        <br>
                     </p>
                 </header>
             </div>
@@ -63,7 +63,7 @@
         <!-- One -->
         <section id="one" class="spotlight style1 bottom">
             <span class="image fit main">
-                <img src="./image/index/2.jpg" alt="关于我们" />
+                <img src="{{url_for('static',filename='img/2.jpg')}}" alt="关于我们" />
             </span>
             <div class="content">
                 <div class="container">
@@ -71,20 +71,20 @@
                         <div class="4u 12u$(medium)">
                             <header>
                                 <h2>关于我们</h2>
-                                <p>一个一天PV只有1000的小站，但还是想要好好做下去....</p>
+                                <p>电协IT部</p>
                             </header>
                         </div>
                         <div class="4u 12u$(medium)">
                             <p>公告：
-                                <br />提供各种动漫网站源码的下载，弹幕网，个人引导页，导航网站...
-                            </p>
+                                <br />1111
+                            </p> 
                         </div>
                         <div class="4u$ 12u$(medium)">
-                            <p>开源鸭起始:
-                                <br />成立于2020年六一儿童节，目标是建设国内
-                                <br />最大的二次元资源站，并在为此努力的路上。
-                                <br />我们分享来自全球的动漫资源，无门槛下载
-                                <br />资源给你最佳的体验。
+                            <p>1111
+                                <br />1111
+                                <br />1111
+                                <br />1111
+                                <br />1111
                             </p>
                         </div>
                     </div>
@@ -96,16 +96,16 @@
         <!-- Two -->
         <section id="two" class="spotlight style2 right">
             <span class="image fit main">
-                <img src="./image/index/3.jpg" alt="" /></span>
+                <img src="{{url_for('static',filename='img/3.jpg')}}" alt="" /></span>
             <div class="content">
                 <header>
-                    <h2>源码下载、互动小站</h2>
-                    <p>这个是源码资源下载站！</p>
+                    <h2>留言</h2>
+                    <p>1111</p>
                 </header>
                 <p>还希望大家多多投稿！
-                    <br />其实还是每天按时审核的呢！
+                    <br />每天按时审核的呢！
                 <ul class="actions">
-                    <li><a href=" " class="button">进入开源鸭</a></li>
+                    <li><a href=" " class="button">进入留言板</a></li>
                 </ul>
             </div>
             <a href="#three" class="goto-next scrolly">Next</a>
@@ -113,15 +113,15 @@
 
         <!-- Three -->
         <section id="three" class="spotlight style3 left">
-            <span class="image fit main bottom"><img src="./image/index/4.jpg" alt="" /></span>
+            <span class="image fit main bottom"><img src="{{url_for('static',filename='img/4.jpg')}}" alt="" /></span>
             <div class="content">
                 <header>
-                    <h2>源码</h2>
-                    <p>一个最近才开始涉及的板块！</p>
+                    <h2>wuhu</h2>
+                    <p>111111</p>
                 </header>
-                <p>各种动漫网站源码的下载，弹幕网，个人引导页，导航网站，只要是动漫风的网页都很喜欢！</p>
+                <p>11111111</p>
                 <ul class="actions">
-                    <li><a href=" " class="button">进入萌源码</a></li>
+                    <li><a href=" " class="button">1111111</a></li>
                 </ul>
             </div>
             <a href="#four" class="goto-next scrolly">Next</a>
@@ -131,49 +131,49 @@
         <section id="four" class="wrapper style1 special fade-up">
             <div class="container">
                 <header class="major">
-                    <h2>网站设计</h2>
-                    <p>CV时长两年半的练习生！</p>
+                    <h2>1111</h2>
+                    <p>1111</p>
                 </header>
                 <div class="box alt">
                     <div class="row uniform">
                         <section class="4u 6u(medium) 12u$(xsmall)">
                             <div class="fa_icon">
                                 <span class="icon alt major spinner_01">
-                                    <img src="./image/index/kapok.jpg" alt="" />
+                                    <img src="{{url_for('static',filename='img/kapok.jpg')}}" alt="" />
                                     <div class="hobby_img_info">
-                                        <h1>绘画</h1>
-                                        <h2>手绘&素描</h2>
+                                        <h1>11</h1>
+                                        <h2>1111</h2>
                                     </div>
                                 </span>
                             </div>
                             <h3 style="text-align: center;">CG</h3>
-                            <p>入坑作《Clannad》。虽然喜欢画画，奈何长了一双毫无用处的手。无论今后遇到什么难题，我都选择吃饭、睡觉、打豆豆。</p>
+                            <p>11111111111111</p>
                         </section>
                         <section class="4u 6u$(medium) 12u$(xsmall)">
                             <div class="fa_icon">
                                 <span class="icon alt major spinner_02">
-                                    <img src="./image/index/acg.jpg" alt="" />
+                                    <img src="{{url_for('static',filename='img/acg.jpg')}}" alt="" />
                                     <div class="hobby_img_info">
-                                        <h1>动漫</h1>
-                                        <h2>漫画&轻小说</h2>
+                                        <h1>1111</h1>
+                                        <h2>111111</h2>
                                     </div>
                                 </span>
                             </div>
                             <h3 style="text-align: center;">ACG</h3>
-                            <p>最爱的动漫《火影忍者》。幻术中的世界有什么不好？沉浸在永恒万花筒的黑暗中吧！伊邪娜美！</p>
+                            <p>111111111111！</p>
                         </section>
                         <section class="4u$ 6u(medium) 12u$(xsmall)">
                             <div class="fa_icon">
                                 <span class="icon alt major spinner_03">
-                                    <img src="./image/index/reading.jpg" alt="" />
+                                    <img src="{{url_for('static',filename='img/reading.jpg')}}" alt="" />
                                     <div class="hobby_img_info">
-                                        <h1>音乐</h1>
-                                        <h2>乐器&Midi</h2>
+                                        <h1>11</h1>
+                                        <h2>111</h2>
                                     </div>
                                 </span>
                             </div>
-                            <h3 style="text-align: center;">Music</h3>
-                            <p>最喜欢的乐器：钢琴。想制作Future Bass音乐。世界太大，生命这样短，要尽量活成自己想要的样子。</p>
+                            <h3 style="text-align: center;">111</h3>
+                            <p>111111111111111。</p>
                         </section>
                     </div>
                 </div>
@@ -185,18 +185,18 @@
             <div class="container">
                 <header>
                     <h2>联系方式</h2>
-                    <p>这里是我的联系方式哦</p>
+                    <p>1111111</p>
                 </header>
             </div>
             <p>邮箱：QQ邮箱@QQ.com</p>
-            <p>QQ：QQ号</p>
+            <p>微信：QQ号</p>
         </section>
 
         <!-- Footer -->
         <footer id="footer">
             <ul class="copyright">
                 <li>&copy; 2000-2023 Blue dot net All Rights Reserved</li>
-                <li>Design: <a>LOGOBAKERY</a></li>
+                <li>Design: <a>JNUECA</a></li>
                 <div
                     style="text-decoration:none; height:20px; margin-top: 20px; line-height:20px; text-align:center;display:flex;justify-content: center;">
                     <img src="https://www.nanningcloud.com/Uploads/2022-10-30/bg_logo.nanningcloud.png" />
