@@ -29,9 +29,9 @@ def login():
                 flash('Invalid input.')  # 显示错误提示
                 return redirect(url_for('login'))  # 重定向回login页
             # 保存表单数据到数据库
-            cur = mysql.connection.cursor()
+            cur = db.connection.cursor()
             cur.execute("INSERT INTO User (phone, password) VALUES (%s, %s)", (phone, password))
-            mysql.connection.commit()
+            db.connection.commit()
             return redirect(url_for('index'))
         flash('登录成功')
         return render_template('login.html')
