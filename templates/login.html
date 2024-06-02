@@ -39,7 +39,7 @@
                             <div class="input-tips">密码</div>
                             <div class="input-inner">
                                 <input type="text" class="inputs" name=password placeholder="密码" id="code" oninput="checkCode()"
-                                    maxlength="4" style="width: 60%;">
+                                    maxlength="20" style="width: 60%;">
                                 <div class="input-inner-btn">
                                     <div class="code">
                                         <a href="#" id="codeMsg" onclick="getCode()">获取验证码</a>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="register-bar">
                             <span class="meet-problems">登录遇到问题？</span>
-                            <a href="#" class="to-register">立即注册</a>
+                            <a href="./register" class="to-register">立即注册</a>
                         </div>
                         <div class="btn">
                             <button class="button special" id="sub" onclick="regF()">登录</button>
@@ -143,12 +143,6 @@
             }
         }
 
-        //登录
-        function regF() {
-            if (checkMobile() && checkCode()) {
-                alert("登录成功");
-            }
-        }
     </script>
 
 </body>
