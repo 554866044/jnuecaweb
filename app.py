@@ -16,6 +16,8 @@ app.config["SECRET_KEY"]=secrets.token_hex(16)
 
 db = MySQL(app)#连接数据库并创建对象
 
+#api接口前缀
+APIPrefix='api/v1/'
 # 登录认证装饰器
 def login_required(func):
     @wraps(func)
@@ -81,7 +83,6 @@ def register():
 @app.route('/forum')
 @login_required
 def forum():
-    
-    return "<h1>{}Hello</h1>".format(session['phone'])
-
-app.run()
+    return render_template('forum.html',tag_data=tag_data,content=info_data)
+                                                                                                                   
+app.run(debug=True)
