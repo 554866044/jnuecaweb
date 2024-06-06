@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JNURCA--你值得信赖</title>
+    <meta name="description" content="JNUECA">
+    <meta name="keywords" content="交流，分享，技术，生活">
+    <link rel="icon" href="https://www.bilibili.com/favicon.ico">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+
+    <!-- Scripts -->
+    <script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.scrolly.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.dropotron.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/jquery.scrollex.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/skel.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/util.js')}}"></script>
+    <script src="{{url_for('static',filename='js/main.js')}}"></script>
+</head>
+
+<body class="landing">
+    <div id="page-wrapper">
+        <!-- Header -->
+        <header id="header">
+            <h1 id="logo"><a href="#">JNUECA</a></h1>
+            <nav id="nav">
+                <ul>
+                    <li><a href="./index.html">首页</a></li>
+                    <li><a href="#" onclick="a('/forum')">讨论板</a></li>
+                    <li><a href="#" onclick="a('./persional.html')">个人中心</a></li>
+                    <li><a href="/login" class="button special">登录</a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+
+    <!-- 把请求到的内容加载到页面中 -->
+    <div id="center">
+
+        <!-- 首页 -->
+
+        <!-- Banner -->
+        <section id="banner">
+            <div class="content">
+                <span class="image">
+                    <div class="img-content">
+                        <img src="{{url_for('static',filename='img/R.jpg')}}" alt="这是我们" />
+                    </div>
+                </span>
+                <header>
+                    <h2>暨南大学电子商务协会论坛</h2>
+                    <p>忠信笃敬
+                        <br>
+                    </p>
+                </header>
+            </div>
+            <a href="#one" class="goto-next scrolly">Next</a>
+        </section>
+
+        <!-- One -->
+        <section id="one" class="spotlight style1 bottom">
+            <span class="image fit main">
+                <img src="{{url_for('static',filename='img/2.jpg')}}" alt="关于我们" />
+            </span>
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="4u 12u$(medium)">
+                            <header>
+                                <h2>关于我们</h2>
+                                <p>电协IT部</p>
+                            </header>
+                        </div>
+                        <div class="4u 12u$(medium)">
+                            <p>公告：
+                                <br />1111
+                            </p> 
+                        </div>
+                        <div class="4u$ 12u$(medium)">
+                            <p>1111
+                                <br />1111
+                                <br />1111
+                                <br />1111
+                                <br />1111
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="#two" class="goto-next scrolly">Next</a>
+        </section>
+
+        <!-- Two -->
+        <section id="two" class="spotlight style2 right">
+            <span class="image fit main">
+                <img src="{{url_for('static',filename='img/3.jpg')}}" alt="" /></span>
+            <div class="content">
+                <header>
+                    <h2>留言</h2>
+                    <p>1111</p>
+                </header>
+                <p>还希望大家多多投稿！
+                    <br />每天按时审核的呢！
+                <ul class="actions">
+                    <li><a href=" " class="button">进入留言板</a></li>
+                </ul>
+            </div>
+            <a href="#three" class="goto-next scrolly">Next</a>
+        </section>
+
+        <!-- Three -->
+        <section id="three" class="spotlight style3 left">
+            <span class="image fit main bottom"><img src="{{url_for('static',filename='img/4.jpg')}}" alt="" /></span>
+            <div class="content">
+                <header>
+                    <h2>wuhu</h2>
+                    <p>111111</p>
+                </header>
+                <p>11111111</p>
+                <ul class="actions">
+                    <li><a href=" " class="button">1111111</a></li>
+                </ul>
+            </div>
+            <a href="#four" class="goto-next scrolly">Next</a>
+        </section>
+
+        <!-- Four -->
+        <section id="four" class="wrapper style1 special fade-up">
+            <div class="container">
+                <header class="major">
+                    <h2>1111</h2>
+                    <p>1111</p>
+                </header>
+                <div class="box alt">
+                    <div class="row uniform">
+                        <section class="4u 6u(medium) 12u$(xsmall)">
+                            <div class="fa_icon">
+                                <span class="icon alt major spinner_01">
+                                    <img src="{{url_for('static',filename='img/kapok.jpg')}}" alt="" />
+                                    <div class="hobby_img_info">
+                                        <h1>11</h1>
+                                        <h2>1111</h2>
+                                    </div>
+                                </span>
+                            </div>
+                            <h3 style="text-align: center;">CG</h3>
+                            <p>11111111111111</p>
+                        </section>
+                        <section class="4u 6u$(medium) 12u$(xsmall)">
+                            <div class="fa_icon">
+                                <span class="icon alt major spinner_02">
+                                    <img src="{{url_for('static',filename='img/acg.jpg')}}" alt="" />
+                                    <div class="hobby_img_info">
+                                        <h1>1111</h1>
+                                        <h2>111111</h2>
+                                    </div>
+                                </span>
+                            </div>
+                            <h3 style="text-align: center;">ACG</h3>
+                            <p>111111111111！</p>
+                        </section>
+                        <section class="4u$ 6u(medium) 12u$(xsmall)">
+                            <div class="fa_icon">
+                                <span class="icon alt major spinner_03">
+                                    <img src="{{url_for('static',filename='img/reading.jpg')}}" alt="" />
+                                    <div class="hobby_img_info">
+                                        <h1>11</h1>
+                                        <h2>111</h2>
+                                    </div>
+                                </span>
+                            </div>
+                            <h3 style="text-align: center;">111</h3>
+                            <p>111111111111111。</p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Five -->
+        <section id="five" class="wrapper style2 special fade">
+            <div class="container">
+                <header>
+                    <h2>联系方式</h2>
+                    <p>1111111</p>
+                </header>
+            </div>
+            <p>邮箱：QQ邮箱@QQ.com</p>
+            <p>微信：QQ号</p>
+        </section>
+
+        <!-- Footer -->
+        <footer id="footer">
+            <ul class="copyright">
+                <li>&copy; 2000-2023 Blue dot net All Rights Reserved</li>
+                <li>Design: <a>JNUECA</a></li>
+                <div
+                    style="text-decoration:none; height:20px; margin-top: 20px; line-height:20px; text-align:center;display:flex;justify-content: center;">
+                    <img src="https://www.nanningcloud.com/Uploads/2022-10-30/bg_logo.nanningcloud.png" />
+                    <p style="height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">沪ICP备000000号-</p>
+                </div>
+            </ul>
+        </footer>
+    </div>
+
+    <!-- 音乐播放器代码 -->
+
+</body>
+
+<script>
+    // 使用ajax对页面的内容进行请求
+    function a(url) {
+        $.get(url, function (data) {
+            $("#center").html(data)
+        });
+    }
+</script>
+
+</html>

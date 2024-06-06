@@ -80,9 +80,10 @@ def register():
                 flash("注册成功")
                 return redirect(url_for('login'))
     return render_template('register.html')
-@app.route('/forum')
+@app.route(APIPrefix+'/forum')
 @login_required
 def forum():
     return render_template('forum.html',tag_data=tag_data,content=info_data)
+
                                                                                                                    
-app.run(debug=True)
+app.run(debug=True,port='3000')

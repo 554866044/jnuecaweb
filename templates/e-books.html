@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>原生表格前端分页示例</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="jnueca.cn">
+    <meta name="description" content="jnueca forum">
+    <!--Google Font-->>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+
+        /* 添加自定义样式 */
+        .pagination {
+            text-align: center; /* 使分页控件居中显示 */
+            margin-top: 10px; /* 增加页码距离 */
+        }
+
+        .pagination a {
+            color: white; /* 页码颜色为白色 */
+            font-weight: bold; /* 加粗字体 */
+            margin: 0 5px; /* 增加页码之间的距离 */
+        }
+
+        .pagination a.active {
+            background-color: #337ab7; /* 激活状态的页码背景颜色 */
+            color: white; /* 激活状态的页码文字颜色 */
+            font-weight: bold; /* 激活状态的页码字体加粗 */
+        }
+    </style>
+</head>
+<body>
+
+<div id="table-container">
+    <input type="text" id="search-input" class="inputs" placeholder="搜索...">
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        // 在JavaScript中访问会话数据
+        var is_login = "{{ session['is_login'] }}";
+        console.log(is_login);  // 输出到控制台
+         $.ajax({
+                url: '/api/books', // 接口 URL
+                type: 'POST', // 请求类型
+                data: JSON.stringify(jsonData), // 发送的数据
+                contentType: 'application/json',
+                dataType: 'json', // 期望服务器返回的数据类型
+                success: function (data) {
+                    // 数据 替换模拟数据
+                },
+                error: function (xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+
+        // 模拟数据
+        var data = [
+            {"id": 1, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 2, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 3, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 4, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 5, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 6, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 7, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 8, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 9, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 10, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+            {"id": 11, "book_name": "红楼梦", "auther": "曹雪芹", "time": '2024-06-05', "book_url": ""},
+        ];
+
+        // 初始化表格
+        var table = document.createElement('table');
+        table.className = 'table table-striped table-bordered';
+        table.style.width = '100%';
+
+        // 创建表头
+        var thead = document.createElement('thead');
+        var headerRow = document.createElement('tr');
+        var headers = ['ID', '书名', '作者', '发布时间', '下载'];
+        headers.forEach(function (header) {
+            var th = document.createElement('th');
+            th.textContent = header;
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // 创建表体
+        var tbody = document.createElement('tbody');
+        data.forEach(function (rowData) {
+            var row = document.createElement('tr');
+            Object.keys(rowData).forEach(function (key) {
+                var cell = document.createElement('td');
+                cell.textContent = rowData[key];
+                row.appendChild(cell);
+            });
+            tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+
+        // 将表格添加到页面
+        $('#table-container').append(table);
+
+        // 初始化分页控件
+        var pageSize = 10; // 每页显示的条数
+        var totalPages = Math.ceil(data.length / pageSize);
+        var currentPage = 1;
+
+        var paginationContainer = document.createElement('div');
+        paginationContainer.className = 'pagination';
+
+        for (var i = 1; i <= totalPages; i++) {
+            var pageLink = document.createElement('a');
+            pageLink.href = '#';
+            pageLink.textContent = i;
+            pageLink.onclick = function (event) {
+                event.preventDefault();
+                currentPage = parseInt(event.target.textContent);
+                renderTable(currentPage);
+            };
+            paginationContainer.appendChild(pageLink);
+        }
+
+        // 将分页控件添加到页面
+        $('#table-container').append(paginationContainer);
+
+        // 初始化表格数据
+        renderTable(currentPage);
+
+        function renderTable(page) {
+            // 清除表格内容
+            $('#table-container table tbody').empty();
+
+            // 计算起始索引和结束索引
+            var startIndex = (page - 1) * pageSize;
+            var endIndex = startIndex + pageSize;
+
+            // 渲染当前页的数据
+            for (var i = startIndex; i < endIndex && i < data.length; i++) {
+                var row = document.createElement('tr');
+                Object.keys(data[i]).forEach(function (key) {
+                    var cell = document.createElement('td');
+                    if (key === 'book_url') {
+                        // 创建超链接
+                        var link = document.createElement('a');
+                        link.href = data[i][key]; // 假设 data[i][key] 是有效的 URL
+                        if(is_login == 'True'){
+                             link.textContent = '下载'; // 设置超链接文本
+                        }else{
+                             link.href = "/login"
+                             link.textContent = '请登录后下载'; // 设置超链接文本
+                        }
+
+                        cell.appendChild(link);
+                    } else {
+                        cell.textContent = data[i][key];
+                    }
+                    row.appendChild(cell);
+                });
+                tbody.appendChild(row);
+            }
+
+            // 更新分页控件的激活状态
+            $('#table-container .pagination a').removeClass('active');
+            $('#table-container .pagination a:nth-child(' + (currentPage + 1) + ')').addClass('active');
+        }
+    });
+</script>
+</body>
+</html>
+
