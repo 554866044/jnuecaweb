@@ -7,7 +7,7 @@ function App() {
   <Routes>
     <Route path='/' element={<Home/>}></Route>
     <Route path='/login' element={<About/>}></Route>
-    <Route path='/forum' element={<Tag_select/>}></Route>
+    <Route path='/forum' element={<App_Forum/>}></Route>
   </Routes>
   </BrowserRouter>);
 }

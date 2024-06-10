@@ -19,22 +19,23 @@ function Nav(user_data){
     </header>
     )
 }
-function Info_list(info_data){
-    return(
-        <div></div>
-    )
-}
-
-function Forum(user_data,info_data){
+function Forum({pagenation,setter}){
     return(
         <div>
-            <Nav user_data={user_data}/>
-            <App_Info_list info_data={info_data.info}/>
-            <Tag_select/>
+            <App_Info_list pagenation={pagenation} setter={setter}/>
+            <Tag_select pagenation={pagenation} setter={setter}/>
         </div>
     )
 }
 export default function App_Forum(){
+    const [pagination,setpagenation]=useState({
+        keyword:'',
+        page:0,
+        size:20,
 
-    return <Forum/>
+        pages:0,
+        total:0,
+        data:[]
+    })  
+    return <Forum pagenation={pagination} setter={setpagenation}/>
 }

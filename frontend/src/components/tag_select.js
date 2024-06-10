@@ -1,16 +1,7 @@
 import { useState } from "react"
 import HttpUtill from "../utills/HttpUtill"
 import ApiUtil from "../utills/ApiUtill"
-export default function Tag_select(){
-    const [pagination,setpagenation]=useState({
-        keyword:'',
-        page:0,
-        size:20,
-
-        pages:0,
-        total:0,
-        data:[]
-    })  
+export default function Tag_select({pagenation,setter}){
     return (
         <div className="col-sm-6 col-lg-12">
             <div className="card">
@@ -18,7 +9,7 @@ export default function Tag_select(){
                 <h5 className="card-title mb-0">Tags</h5>
               </div>
               <div className="card-body">
-                <Tag_list pagination={pagination} setter={setpagenation}/>
+                <Tag_list pagination={pagenation} setter={setter}/>
             </div>
           </div>
         </div>
@@ -35,6 +26,7 @@ function Tag_list({pagination,setter}){
 function Draw_tag({tag,pagination,setter}){  
   const [search,setsearch]=useState({...pagination})
   function HandleClick(){
+    console.log('触发')
     setsearch(
       {
         ...pagination,
@@ -43,7 +35,6 @@ function Draw_tag({tag,pagination,setter}){
       }
     )
     setter(search)
-    HttpUtill.post(ApiUtil.url_tag_search,search)
     }
   return(
       <li className="list-inline-item m-0">
