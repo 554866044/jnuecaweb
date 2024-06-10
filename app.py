@@ -1,11 +1,13 @@
 from flask import Flask,render_template,session,Response
 from flask import url_for,request,redirect,flash
 from flask_mysqldb import MySQL
+from flask_cors import CORS
 from functools import wraps
 import secrets
 
 
 app = Flask(__name__)
+CORS(app)#跨域访问
 
 app.config['MYSQL_HOST'] = 'localhost' # MySQL主机地址
 app.config['MYSQL_USER'] = 'root' # MySQL用户名

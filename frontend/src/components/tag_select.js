@@ -1,4 +1,6 @@
 import { useState } from "react"
+import HttpUtill from "../utills/HttpUtill"
+import ApiUtil from "../utills/ApiUtill"
 export default function Tag_select(){
     const [pagination,setpagenation]=useState({
         keyword:'',
@@ -31,16 +33,17 @@ function Tag_list({pagination,setter}){
   return (<ul>{row}</ul>)
 }
 function Draw_tag({tag,pagination,setter}){  
-  const [serach,setserach]=useState({...pagination})
+  const [search,setsearch]=useState({...pagination})
   function HandleClick(){
-    setserach(
+    setsearch(
       {
         ...pagination,
         keyword:tag,
         page:1
       }
     )
-    setter(serach)
+    setter(search)
+    HttpUtill.post(ApiUtil.url_tag_search,search)
     }
   return(
       <li className="list-inline-item m-0">

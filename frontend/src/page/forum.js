@@ -2,6 +2,7 @@ import HttpUtill from '../utills/HttpUtill'
 import ApiUtill from '../utills/ApiUtill'
 import { useState } from 'react'
 import Tag_select from '../components/tag_select'
+import App_Info_list from '../components/info_list'
 
 function Nav(user_data){
     return(
@@ -28,7 +29,7 @@ function Forum(user_data,info_data){
     return(
         <div>
             <Nav user_data={user_data}/>
-            <Info_list info_data={info_data.info}/>
+            <App_Info_list info_data={info_data.info}/>
             <Tag_select/>
         </div>
     )

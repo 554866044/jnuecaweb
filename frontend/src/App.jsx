@@ -1,6 +1,7 @@
 import { BrowserRouter, Route,Routes} from 'react-router-dom';
 import App_Forum from './page/forum'
 import Tag_select from './components/tag_select';
+import Info_list from './components/info_list'
 function App() {
   return (<BrowserRouter>
   <Routes>
