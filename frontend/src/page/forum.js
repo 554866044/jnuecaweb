@@ -3,7 +3,7 @@ import ApiUtill from '../utills/ApiUtill'
 import { useState } from 'react'
 import Tag_select from '../components/tag_select'
 import App_Info_list from '../components/info_list'
-
+import Searchpagination from '../components/searchpagnition'
 function Nav(user_data){
     return(
         <header id="header">
@@ -20,15 +20,16 @@ function Nav(user_data){
     )
 }
 function Forum({pagenation,setter}){
-    return(
+    return(<>
         <div>
             <App_Info_list pagenation={pagenation} setter={setter}/>
             <Tag_select pagenation={pagenation} setter={setter}/>
         </div>
+        </>
     )
 }
 export default function App_Forum(){
-    const [pagination,setpagenation]=useState({
+    const [pagenation,setpagenation]=useState({
         keyword:'',
         page:0,
         size:20,
@@ -37,5 +38,8 @@ export default function App_Forum(){
         total:0,
         data:[]
     })  
-    return <Forum pagenation={pagination} setter={setpagenation}/>
+    return <>
+    <Forum pagenation={pagenation} setter={setpagenation}/>
+    </>
+
 }

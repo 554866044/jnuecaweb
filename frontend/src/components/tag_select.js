@@ -26,7 +26,6 @@ function Tag_list({pagination,setter}){
 function Draw_tag({tag,pagination,setter}){  
   const [search,setsearch]=useState({...pagination})
   function HandleClick(){
-    console.log('触发')
     setsearch(
       {
         ...pagination,

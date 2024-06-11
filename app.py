@@ -4,7 +4,7 @@ from flask_mysqldb import MySQL
 from flask_cors import CORS
 from functools import wraps
 import secrets
-
+import math
 
 app = Flask(__name__)
 CORS(app)#跨域访问
@@ -35,12 +35,34 @@ def Tag_search():
     keyword = request.args.get('keyword')
     page = request.args.get('page')
     size = request.args.get('size')
+    #返回数据模板
+    data = {
+    'keyword': keyword,
+    'page': page,
+    'size': size,
+    'pages': 0,
+    'total': 0,
+    'data': []
+}
+    #连接数据库
     cur = db.connection.cursor()
     print(keyword)
+    #sql语句执行
     cur.execute("SELECT info_id, title, content FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name ='{0}')".format(keyword))
+    #获取结果
     info_data=cur.fetchall()
-    print(info_data)
-    return  jsonify({'message': 'Hello from Flask API!'})
+    #分页查询的实现
+    cur.execute("SELECT info_id, title, content FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '校园杂谈')LIMIT {1} OFFSET {2};".format(keyword,size,page))
+    #数据处理
+    page_data=cur.fetchall()
+    result = [{'title': t[0], 'content': t[1], 'keyword': t[2]} for t in page_data]
+    #返回数据处理
+    data['total']=len(info_data)
+    #data['pages']=math.ceil(data['total']/data[size])
+    data['success']=True
+    data['data']=result
+    print(data)
+    return  jsonify(data)
 
 @app.route(APIPrefix+url_load_forum_data)
 def data_load():
