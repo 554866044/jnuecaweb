@@ -24,6 +24,7 @@ function Forum({pagenation,setter}){
         <div>
             <App_Info_list pagenation={pagenation} setter={setter}/>
             <Tag_select pagenation={pagenation} setter={setter}/>
+            <Searchpagination pagination={pagenation} setter={setter}/>
         </div>
         </>
     )
@@ -31,8 +32,8 @@ function Forum({pagenation,setter}){
 export default function App_Forum(){
     const [pagenation,setpagenation]=useState({
         keyword:'',
-        page:0,
-        size:20,
+        page:1,
+        size:5,
 
         pages:0,
         total:0,

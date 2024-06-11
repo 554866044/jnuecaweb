@@ -1,11 +1,29 @@
-import React from 'react';
+import {React,useState} from 'react';
 import ReactPaginate from 'react-paginate';
-export default function Searchpagination({pagination,setter}){
-    function onChange(current){
-        console.log(current)
+export default function SearchPagination({ pagination, setter }) {
+    const [currentPage, setCurrentPage] = useState(pagination.page);
+
+    function handlePageChange(selectedPage) {
+        // 更新页码值
+        setCurrentPage(selectedPage + 1);
+
+        // 将父组件值更新
+        const updatedPagination = {
+            ...pagination,
+            page: selectedPage + 1,
+        };
+        setter(updatedPagination);
+        console.log(pagination.pages)
     }
-    console.log(pagination)
-    return(<div>
-        <ReactPaginate pageCount={pagination.pages} onClick={onChange}/>
-    </div>)
+
+    return (
+        <div>
+            <ReactPaginate
+                pageCount={Math.ceil(pagination.total/pagination.size)}
+                onPageChange={({ selected }) => handlePageChange(selected)}
+                pageRangeDisplayed={pagination.size}
+                forcePage={currentPage - 1} 
+            />
+        </div>
+    );
 }

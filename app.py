@@ -52,13 +52,14 @@ def Tag_search():
     #获取结果
     info_data=cur.fetchall()
     #分页查询的实现
-    cur.execute("SELECT info_id, title, content FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '校园杂谈')LIMIT {1} OFFSET {2};".format(keyword,size,page))
+    offset=(int(page)-1)*int(size)
+    limit=int(size)
+    cur.execute("SELECT info_id, title, content FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '校园杂谈')LIMIT {1} OFFSET {2};".format(keyword,limit,offset))
     #数据处理
     page_data=cur.fetchall()
     result = [{'title': t[0], 'content': t[1], 'keyword': t[2]} for t in page_data]
     #返回数据处理
     data['total']=len(info_data)
-    #data['pages']=math.ceil(data['total']/data[size])
     data['success']=True
     data['data']=result
     print(data)
