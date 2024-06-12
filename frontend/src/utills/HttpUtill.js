@@ -10,11 +10,27 @@ export default class HttpUtill{
 
             })
     }
-    static post(url,data){
-        return new Promise((resolve,reject)=>{
-            fetch(url,{method:'POST',
-        headers:{'Accept':'application.json()',
-    'Content-Type':'application/json',},body:JSON.stringify(data)}).then(response=>response.json())
-        })
+    static async post(url, data) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            const responseData = await response.json();
+            return responseData;
+        } catch (error) {
+            console.error('Error sending POST request:', error);
+            throw error;
+        }
     }
+    
 }

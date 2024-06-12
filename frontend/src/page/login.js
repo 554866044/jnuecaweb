@@ -1,33 +1,41 @@
-import {React,useState} from 'react';
+import {React,useEffect,useState} from 'react';
 import { Helmet } from 'react-helmet';
 import ApiUtil from '../utills/ApiUtill';
 import HttpUtill from '../utills/HttpUtill';
 
 function LoginPage()  {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [loginError, setLoginError] = useState('');
-    let user={
+    const [phone,setphone]=useState('');
+    const [password,setpassword]=useState('');
+    const [user,setuser]=useState({
         islogin:false,
-        userdata:[]
-    }
+        userdata:{}
+    });
+    const handleInputphone= (e) => {
+        setphone(e.target.value);
+        console.log(phone)
+    };
+    const handleInputpassword= (e) => {
+        setpassword(e.target.value);
+    };
     const handleLogin = async () => {
+        let user_submit={
+            ...user,
+            phone:phone,
+            password:password
+        }
+        setuser(user_submit)
+        console.log(user)
         try {
-            const response = await HttpUtill.post(ApiUtil.url_user_login, {
-                username,
-                password,
-            });
-
-            if (response.success === true) {
+            const response = await HttpUtill.post(ApiUtil.url_user_login, user_submit);
+            console.log(response)
+            if (response.success == true) {
                 
-                console.log('Login successful');
+                console.log(response.message);
             } else {
-        
-                setLoginError('Invalid credentials. Please try again.');
+                console.log(response.message)
             }
         } catch (error) {
             console.error('Error during login:', error);
-            setLoginError('An error occurred. Please try again later.');
         }
     };
 
@@ -54,14 +62,16 @@ function LoginPage()  {
                 </div>
                 <div className="right-login-form">
                     <div className="form-wrapper">
-                        <form method="post">
+                       
                             <h3>Login In</h3>
                             <div className="input-items">
                                 <div className="input-tips">手机号</div>
                                 <input
-                                    type="text"
+                                    type="text"                                 
                                     className="inputs"
                                     name="phone"
+                                    defaultValue={phone}
+                                    onClick={handleInputphone}
                                     placeholder="手机号注册/登录"
                                     id="mobile"
                                     maxLength="11"
@@ -74,6 +84,8 @@ function LoginPage()  {
                                     <input
                                         type="text"
                                         className="inputs"
+                                        defaultValue={password}
+                                        onClick={handleInputpassword}
                                         name="password"
                                         placeholder="密码"
                                         id="code"
@@ -95,7 +107,7 @@ function LoginPage()  {
                                 </a>
                             </div>
                             <div className="btn">
-                                <button className="button special" id="sub" >
+                                <button className="button special" id="sub" onClick={handleLogin}>
                                     登录
                                 </button>
                             </div>
@@ -104,7 +116,6 @@ function LoginPage()  {
                                 <a href="#">《jnueca用户服务协议》</a>
                                 <a href="#">《jnueca用户个人信息及隐私保护政策》</a>
                             </p>
-                        </form>
                     </div>
                 </div>
             </div>

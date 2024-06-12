@@ -42,7 +42,7 @@ function Draw_tag({ tag, pagination, setter }) {
 
   return (
     <li className="list-inline-item m-0">
-      <button className="btn btn-link p-0" onClick={HandleClick}>{tag}</button> {/* 修改了 className */}
+      <button className="btn btn-link p-0" onClick={HandleClick}>{tag}</button> 
     </li>
   );
 }

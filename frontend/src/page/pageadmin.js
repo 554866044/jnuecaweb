@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from'react';
-import ApiUtill from '../utills/ApiUtill';
-import HttpUtill from '../utills/HttpUtill';
+import { Helmet } from 'react-helmet';
 function SidebarMenuItem({ text, onClick }) {
   return (
     <div className="menu-item" onClick={onClick}>
@@ -37,48 +36,29 @@ function Table({ id, headers, data }) {
   );
 }
 
-function ManagementPage({pagenation,setter}) {
+function ManagementPage() {
   const [activeTable, setActiveTable] = useState('posts');
   const [postsData, setPostsData] = useState([]);
   const [usersData, setUsersData] = useState([]);
 
   useEffect(() => {
-    // 获取帖子数据
-    async function Request_info_data(){
-      const result=await HttpUtill.get(ApiUtill.url_admin_info_load+'?'+pagenation.keyword+'&size='+pagenation.size+'&page='+pagenation.page)
-      console.log(result) 
-      let pagenationRusult={}
-
-      if (result?.success){
-          pagenationRusult={
-              ...pagenation,
-              pages:result.pages,
-              total:result.total,
-              data:result.data
-          } 
-          setter(pagenationRusult)   
-      }
-      else{
-          pagenationRusult={
-              ...pagenation,
-              pages:0,
-              total:0,
-              data:[]
-      }
-  }
-  }
+    // 模拟获取帖子数据
+    fetch('/api/posts')
+    .then(response => response.json())
+    .then(data => setPostsData(data));
 
     // 模拟获取用户数据
     fetch('/api/users')
     .then(response => response.json())
     .then(data => setUsersData(data));
-  }, [pagenation.page]);
+  }, []);
 
   const handleMenuItemClick = (tableId) => {
     setActiveTable(tableId);
   };
 
   return (
+    <>
     <div>
       <div className="sidebar">
         <SidebarMenuItem text="帖子管理" onClick={() => handleMenuItemClick('posts')} />
@@ -95,12 +75,13 @@ function ManagementPage({pagenation,setter}) {
         {activeTable === 'users' && (
           <Table
             id="users-table"
-            headers={['ID', '用户名', '手机', '注册时间', '状态', '操作']}
+            headers={['ID', '用户名', '手机', '邮箱', '注册时间', '状态', '操作']}
             data={usersData}
           />
         )}
       </div>
     </div>
+    </>
   );
 }
 

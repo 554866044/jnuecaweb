@@ -91,5 +91,56 @@ def op_info():
     return 0
 @app.route(APIPrefix+url_user_login,methods=['POST'])
 def login():
-    return jsonify()
+    if request.method == 'POST':  # 判断是否是 POST 请求
+            user_data=request.json
+            phone = user_data.get('phone')
+            password = user_data.get('password')
+            print(phone,password)
+            # 连接数据库
+            cur = db.connection.cursor()
+            #查询用户是否在数据库中
+            user_info=check_user_exists(phone=phone)
+            print(user_info)
+            if user_info:
+                db_password = user_info[0]
+                if password == db_password:
+                    user={'user_id':user_info[1],'username':user_info[2],'account_status':user_info[3]}
+                    user_data['user_data']=user
+                    user_data['success']=True
+                    user_data['islogin']=True
+                    user_data['message']='登陆成功'
+                    return jsonify(user_data)
+                else:
+                    user_data['successs']=False
+                    user_data['message']='密码错误'
+                    return jsonify(user_data)
+            else:
+                # 插入新用户
+                try:
+                    cur = db.connection.cursor()
+                    cur.execute("INSERT INTO user (phone, user_password) VALUES ({0}, {1});".format(phone,password))
+                    db.connection.commit()
+                    cur.close()
+                    #返回数据组装
+                    user_data['success']=True
+                    user_data['message']='新用户注册，欢迎！！'
+                    user_data['islogin']=True
+                    user_data['userdata']=[]
+                    return jsonify(user_data)
+                except Exception as e:
+                    print("Error inserting user:", e)
+                    user_data['success']=False
+                    user_data['message']='插入用户失败'
+                    return jsonify(user_data)
+def check_user_exists(phone):
+    # 查询数据库，检查手机号是否已存在,存在则返回密码,id,名字
+    try:
+        cur = db.connection.cursor()
+        cur.execute("SELECT user_password,user_id,username, account_status FROM User WHERE phone = '{0}';".format(phone))
+        result = cur.fetchone()
+        return result
+    except Exception as e:
+        print("Error checking user:", e)
+        return None
+
 app.run(debug=True,port='5001')
