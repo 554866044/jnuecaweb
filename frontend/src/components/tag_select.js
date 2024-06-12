@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,useEffect} from "react"
 import HttpUtill from "../utills/HttpUtill"
 import ApiUtil from "../utills/ApiUtill"
 export default function Tag_select({pagenation,setter}){
@@ -21,23 +21,28 @@ function Tag_list({pagination,setter}){
   tags.forEach((tag)=>{ row.push(
       <Draw_tag tag={tag.keyword} pagination={pagination} setter={setter}/>
     ); })
-  return (<ul>{row}</ul>)
+  return (<ul className="list-inline mb-0 d-flex flex-wrap gap-2">{row}</ul>)
 }
-function Draw_tag({tag,pagination,setter}){  
-  const [search,setsearch]=useState({...pagination})
-  function HandleClick(){
-    setsearch(
-      {
-        ...pagination,
-        keyword:tag,
-        page:1
-      }
-    )
-    setter(search)
-    }
-  return(
-      <li className="list-inline-item m-0">
-        <button classNameName="list-inline-item m-0" onClick={HandleClick}>{tag}</button>
-      </li>
-  )
+
+function Draw_tag({ tag, pagination, setter }) {
+  const [search, setsearch] = useState(pagination); // 直接使用 pagination 初始化
+
+  useEffect(() => {
+    setter(search); // 当 search 更新时调用 setter
+  }, [search]); // 添加 search 到依赖数组
+
+  function HandleClick() {
+    const newSearch = {
+      ...pagination,
+      keyword: tag,
+      page: 1
+    };
+    setsearch(newSearch); // 使用新状态更新 search
+  }
+
+  return (
+    <li className="list-inline-item m-0">
+      <button className="btn btn-link p-0" onClick={HandleClick}>{tag}</button> {/* 修改了 className */}
+    </li>
+  );
 }

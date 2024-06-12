@@ -1,110 +1,24 @@
-import React, { useState, useEffect } from 'eact';
-
-function LoginComponent() {
-  const handleLogin = () => {
-    setIsLoggedIn(true); // 将登录状态设置为 true
-    navigate('/personal-center'); // 切换到个人中心组件的路由
-  };
-
-  return (
-    <div>
-      <button onClick={handleLogin}>登录</button>
-    </div>
-  );
-}
-
-function PersonalCenterComponent() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [isSaving, setIsSaving] = useState(false);
-
-  useEffect(() => {
-    // 模拟从后端获取最新留言信息
-    fetch('http://your.backend.api/url')
-     .then(response => response.json())
-     .then(data => setMessages(data)); 
-  }, []);
-
-  const handleUsernameChange = e => {
-    setUsername(e.target.value);
-  };
-
-  const handlePasswordChange = e => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    setIsSaving(true);
-    // 发送请求到后端服务器以保存用户名和密码
-    //后端提供的用于保存用户名和密码的 API 接口
-    fetch('/api/save-user', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }) 
-    })
-     .then(response => response.json())
-     .then(data => {
-        if (data.success) {
-          // 保存成功的处理
-          console.log('用户名和密码保存成功!');
-        } else {
-          // 保存失败的处理
-          console.error('保存用户名和密码失败:', data.error);
-        }
-      })
-     .finally(() => {
-        setIsSaving(false);
-      });
-  };
-
-  return (
-    <div>
-      {isLoggedIn? (
-        <div>
-          <h2>个人中心</h2>
-          <input value={username} onChange={handleUsernameChange} />
-          <input type="password" value={password} onChange={handlePasswordChange} />
-          <button disabled={isSaving} onClick={handleSubmit}>保存</button>
-          <h2>留言板</h2>
-          <ul>
-            {messages.map(message => (
-              <li>{message}</li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-    </div>
-  );
-}
+import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet'
 
 
-
-
-function App() {
+export default function Index() {
  
   return (   
     <>
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/jquery.scrolly.min.js"></script>
-    <script src="../js/jquery.dropotron.min.js"></script>
-    <script src="../js/jquery.scrollex.min.js"></script>
-    <script src="../js/skel.min.js"></script>
-    <script src="../js/util.js"></script>
-    <script src="../js/main.js"></script>
-  <meta charSet="UTF-8" />
-  <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JNURCA--你值得信赖</title>
-  <meta name="description" content="JNUECA" />
-  <meta name="keywords" content="交流，分享，技术，生活" />
-  <link rel="icon" href="https://www.bilibili.com/favicon.ico" />
-  <link rel="stylesheet" href="../css/main.css" />
-  {/* Scripts */}
+    <Helmet>
+      <meta charSet="UTF-8" />
+      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>JNURCA--你值得信赖</title>
+      <meta name="description" content="JNUECA" />
+      <meta name="keywords" content="交流，分享，技术，生活" />
+      <link rel="icon" href="https://www.bilibili.com/favicon.ico" />
+      <link rel="stylesheet" href="/static/css/index.css" />
+    </Helmet>
+
   <div id="page-wrapper">
-    {/* Header */}
+
     <header id="header">
       <h1 id="logo">
         <a href="#">JNUECA</a>
@@ -116,7 +30,7 @@ function App() {
             <a href="./index.html">首页</a>
           </li>
           <li>
-            <a href="#" onclick="a('/forum')">
+            <a href="/forum" onclick="a('/forum')">
               讨论板
             </a>
           </li>
@@ -134,16 +48,15 @@ function App() {
  
     </header>
   </div>
-  {/* 把请求到的内容加载到页面中 */}
+
   <div id="center">
-    {/* 首页 */}
-    {/* Banner */}
+
     <section id="banner">
       <div className="content">
         <span className="image">
           <div className="img-content">
             <img
-              src="../img/R.jpg"
+              src="/static/images/index&login&register/R.jpg"
               alt="这是我们"
             />
           </div>
@@ -160,13 +73,11 @@ function App() {
         Next
       </a>
     </section>
-    {/* One */}
     <section id="one" className="spotlight style1 bottom">
 
       <span className="image fit main">
-        <img src="../img/2.jpg" alt="关于我们" />
-      </span>
-
+        <img src="/static/images/index&login&register/2.jpg" alt="关于我们" />
+      </span>ages/index&&login&&register
       <div className="content">
         <div className="container">
           <div className="row">
@@ -214,10 +125,9 @@ function App() {
         Next
       </a>
     </section>
-    {/* Two */}
     <section id="two" className="spotlight style2 right">
       <span className="image fit main">
-        <img src="../img/3.jpg" alt="" />
+        <img src="/static/images/index&login&register/3.jpg" alt="" />
       </span>
       <div className="content">
         <header>
@@ -231,7 +141,7 @@ function App() {
         </p>
         <ul className="actions">
           <li>
-            <a href=" " className="button">
+            <a href="/forum" className="button">
               进入留言板
             </a>
           </li>
@@ -241,10 +151,9 @@ function App() {
         Next
       </a>
     </section>
-    {/* Three */}
     <section id="three" className="spotlight style3 left">
       <span className="image fit main bottom">
-        <img src="../img/4.jpg" alt="" />
+        <img src="/static/images/index&login&register/4.jpg" alt="" />
       </span>
       <div className="content">
         <header>
@@ -264,7 +173,6 @@ function App() {
         Next
       </a>
     </section>
-    {/* Four */}
     <section id="four" className="wrapper style1 special fade-up">
       <div className="container">
         <header className="major">
@@ -277,7 +185,7 @@ function App() {
               <div className="fa_icon">
                 <span className="icon alt major spinner_01">
                   <img
-                    src="../img/kapok.jpg"
+                    src="/static/images/index&login&register/kapok.jpg"
                     alt=""
                   />
                   <div className="hobby_img_info">
@@ -293,7 +201,7 @@ function App() {
               <div className="fa_icon">
                 <span className="icon alt major spinner_02">
                   <img
-                    src="../img/acg.jpg"
+                    src="/static/images/index&login&register/acg.jpg"
                     alt=""
                   />
                   <div className="hobby_img_info">
@@ -309,7 +217,7 @@ function App() {
               <div className="fa_icon">
                 <span className="icon alt major spinner_03">
                   <img
-                    src="../img/reading.jpg"
+                    src="/static/images/index&login&register/reading.jpg"
                     alt=""
                   />
                   <div className="hobby_img_info">
@@ -325,7 +233,6 @@ function App() {
         </div>
       </div>
     </section>
-    {/* Five */}
     <section id="five" className="wrapper style2 special fade">
       <div className="container">
         <header>
@@ -333,10 +240,10 @@ function App() {
           <p>1111111</p>
         </header>
       </div>
-      <p>邮箱：QQ邮箱@QQ.com</p>
-      <p>微信：QQ号</p>
+      <p>邮箱：13316865662@163.com</p>
+      <p>微信：re_wuhu</p>
     </section>
-    {/* Footer */}
+
     <footer id="footer">
       <ul className="copyright">
         <li>© 2000-2023 Blue dot net All Rights Reserved</li>
@@ -363,16 +270,13 @@ function App() {
               color: "#939393"
             }}
           >
-            沪ICP备000000号-
+            ICP备000000号-
           </p>
         </div>
       </ul>
     </footer>
   </div>
-  {/* 音乐播放器代码 */}
 </>
 
 
   );}
-
-export default App

@@ -1,21 +1,16 @@
 import { BrowserRouter, Route,Routes} from 'react-router-dom';
 import App_Forum from './page/forum'
-import Tag_select from './components/tag_select';
-import Info_list from './components/info_list'
+import Index from './page';
+import ManagementPage from './page/pageadmin';
+import LoginPage from './page/login';
 function App() {
   return (<BrowserRouter>
   <Routes>
-    <Route path='/' element={<Home/>}></Route>
-    <Route path='/login' element={<About/>}></Route>
+    <Route path='/' element={<Index/>}></Route>
     <Route path='/forum' element={<App_Forum/>}></Route>
+    <Route path='/admin' element={<ManagementPage/>}></Route>
+    <Route path='/login' element={<LoginPage/>}></Route>
   </Routes>
   </BrowserRouter>);
-}
-function Home() {
-  return (<div>欢迎来到首页！</div>);
-}
-
-function About() {
-  return (<div>关于我们的页面。</div>);
 }
 export default App

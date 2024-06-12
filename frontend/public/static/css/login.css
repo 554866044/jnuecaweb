@@ -24,7 +24,7 @@
     overflow: hidden;
     position: relative;
     border-radius: 40px;
-    background: url(../img/login/5.jpg) no-repeat center center;
+    background: url(/static/images/index&login&register/5.jpg) no-repeat center center;
     background-size: cover;
 }
 
@@ -146,5 +146,5 @@
 .login-tip a {
     border: 0;
     color: inherit;
-    color: rgba(34, 31, 31, 0.3);
+    color: rgba(255, 255, 255, 0.3);
 }

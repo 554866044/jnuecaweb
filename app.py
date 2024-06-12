@@ -26,7 +26,10 @@ url_tag_search='forum/tag_search/'
 url_forum_search='forum/data_search'
 #论坛信息加载接口
 url_load_forum_data='forum/forum_data_load'
-
+#admin_load_info加载接口
+url_admin_info_op='admin/info_load'
+#登录信息接口
+url_user_login='login'
 
 
 
@@ -54,10 +57,10 @@ def Tag_search():
     #分页查询的实现
     offset=(int(page)-1)*int(size)
     limit=int(size)
-    cur.execute("SELECT info_id, title, content FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '校园杂谈')LIMIT {1} OFFSET {2};".format(keyword,limit,offset))
+    cur.execute("SELECT info_id, title, content FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '{0}')LIMIT {1} OFFSET {2};".format(keyword,limit,offset))
     #数据处理
     page_data=cur.fetchall()
-    result = [{'title': t[0], 'content': t[1], 'keyword': t[2]} for t in page_data]
+    result = [{'title': t[2], 'content': t[1], 'keyword': t[0]} for t in page_data]
     #返回数据处理
     data['total']=len(info_data)
     data['success']=True
@@ -65,7 +68,28 @@ def Tag_search():
     print(data)
     return  jsonify(data)
 
-@app.route(APIPrefix+url_load_forum_data)
-def data_load():
-     return True                                                                                                                  
+@app.route(APIPrefix+url_admin_info_op+'/' ,methods=['GET','POST'])
+def op_info():
+    page = request.args.get('page')
+    size = request.args.get('size')
+    #返回数据模板
+    data = {
+    'page': page,
+    'size': size,
+    'pages': 0,
+    'total': 0,
+    'data': []
+}
+    #连接数据库
+    cur = db.connection.cursor()
+    #sql语句执行
+    cur.execute("SELECT info_id, title, content,create_time FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name ='{0}')".format(keyword))
+    #获取结果
+    info_data=cur.fetchall()
+    #分页查询的实现
+    offset=(int(page)-1)*int(size)
+    return 0
+@app.route(APIPrefix+url_user_login,methods=['POST'])
+def login():
+    return jsonify()
 app.run(debug=True,port='5001')

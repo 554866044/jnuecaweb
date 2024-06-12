@@ -17,12 +17,15 @@ export default function SearchPagination({ pagination, setter }) {
     }
 
     return (
-        <div>
+        <div className='mt-4'>
             <ReactPaginate
                 pageCount={Math.ceil(pagination.total/pagination.size)}
                 onPageChange={({ selected }) => handlePageChange(selected)}
                 pageRangeDisplayed={pagination.size}
                 forcePage={currentPage - 1} 
+                containerClassName='pagination pagination-light d-inline-block d-md-flex justify-content-center'
+                pageClassName='page-item'
+                activeClassName='page-item active'
             />
         </div>
     );

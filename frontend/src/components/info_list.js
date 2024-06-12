@@ -2,7 +2,7 @@ import HttpUtill from '../utills/HttpUtill'
 import ApiUtill from '../utills/ApiUtill'
 import { useState ,useEffect,jsonify} from 'react'
 
-export default function App_Info_list({pagenation,setter}){//功能的组装
+export default function App_Info_list({pagenation,setter,url}){//功能的组装
     useEffect(()=>{//依赖于keyword,size,page
         async function requestdata(){
             const result=await HttpUtill.get(ApiUtill.url_tag_search+'?'+'keyword='+pagenation.keyword+'&size='+pagenation.size+'&page='+pagenation.page)
@@ -26,35 +26,45 @@ export default function App_Info_list({pagenation,setter}){//功能的组装
                     data:[]
             }
         }
-            console.log(pagenationRusult)
         }
         requestdata()
  },[pagenation.keyword,pagenation.size,pagenation.page])
-
+ function Data_list({ pagination }) {
+    // 渲染每个项目
+    const renderCard = (item) => (<>
+      <div className="card bg-transparent border-0">
+        <div className="row g-3">
+          <div className="col-4">
+            <img className='rounded' src='/logo512.png' alt='图片帖之后实装'/>
+          </div>
+          <div className="col-8">
+            <a href="#" className="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{item.keyword}</a>
+            <h5><a href="blog-details.html" className="btn-link stretched-link text-reset fw-bold">{item.title}</a></h5>
+            <div className="d-none d-sm-inline-block">
+              <p className="mb-2">{item.content}</p>
+              <a className="small text-secondary" href="#!"> <i className="bi bi-calendar-date pe-1"></i>{item.time}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr className='my-4'/>
+      </>
+    );
+    return(<div className='bg-mode p-4'> 
+    <h1 className='h4 mb-4'>Tag:{pagenation.keyword}相关贴子</h1>
+    {pagination.data.map(renderCard)}
+    </div>   )
+}
     if(pagenation.total === 0){//tag_search的结果如果没相关信息
         return(
-            <div className='col-lg-8'>
-                <h1>没有标签<span className='text-danger ms-2'>{pagenation.keyword}</span>相关贴子</h1>
-            </div>
+                <h1 className='h4 mb-4'>没有标签<span className='text-danger ms-2'>{pagenation.keyword}</span>相关贴子</h1>
         )
     }
     else{
-        return (pagenation.data.map(item => (
-            <div class="card bg-transparent border-0">
-                <div class="row g-3">
-                  <div class="col-4">
-                    <img className='rounded' src='.../public/logo512.png' alt='图片帖之后实装'/>
-                  </div>
-                  <div class="col-8">
-                    <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{item.keyword}</a>
-                    <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">{item.title}</a></h5>
-                    <div class="d-none d-sm-inline-block">
-                      <p class="mb-2">{item.content}</p>
-                      <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i>{item.time}</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          )))
+        return (
+            <>
+                <Data_list pagination={pagenation}/>          
+            </>
+        )
     } 
 }
