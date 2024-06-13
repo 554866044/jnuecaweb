@@ -1,5 +1,5 @@
-from flask import Flask,render_template,session,Response,jsonify
-from flask import url_for,request,redirect,flash
+from flask import Flask,session,Response,jsonify
+from flask import request
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 from functools import wraps
@@ -7,7 +7,8 @@ import secrets
 import math
 
 app = Flask(__name__)
-CORS(app)#跨域访问
+app.config['SESSION_TYPE'] = 'filesystem'
+CORS(app,supports_credentials=True)#跨域访问
 
 app.config['MYSQL_HOST'] = 'localhost' # MySQL主机地址
 app.config['MYSQL_USER'] = 'root' # MySQL用户名
@@ -26,10 +27,14 @@ url_tag_search='forum/tag_search/'
 url_forum_search='forum/data_search'
 #论坛信息加载接口
 url_load_forum_data='forum/forum_data_load'
-#admin_load_info加载接口
+#admin_info_op加载接口
 url_admin_info_op='admin/info_load'
 #登录信息接口
 url_user_login='login'
+#登录状态查询接口
+url_login_status='login_status'
+#发布信息接口
+url_submit_info='forum/submit_info'
 
 
 
@@ -43,7 +48,6 @@ def Tag_search():
     'keyword': keyword,
     'page': page,
     'size': size,
-    'pages': 0,
     'total': 0,
     'data': []
 }
@@ -51,44 +55,68 @@ def Tag_search():
     cur = db.connection.cursor()
     print(keyword)
     #sql语句执行
-    cur.execute("SELECT info_id, title, content FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name ='{0}')".format(keyword))
-    #获取结果
-    info_data=cur.fetchall()
+    cur.execute("SELECT COUNT(CASE WHEN info_status = 1 THEN NULL ELSE 1 END) AS total FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '{0}');".format(keyword))
+    #获取长度结果
+    length=cur.fetchone()[0]
     #分页查询的实现
     offset=(int(page)-1)*int(size)
     limit=int(size)
-    cur.execute("SELECT info_id, title, content FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '{0}')LIMIT {1} OFFSET {2};".format(keyword,limit,offset))
+    cur.execute("SELECT * FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '{0}')AND info_status = 0 LIMIT {1} OFFSET {2};".format(keyword,limit,offset))
     #数据处理
     page_data=cur.fetchall()
-    result = [{'title': t[2], 'content': t[1], 'keyword': t[0]} for t in page_data]
+    cur.close()
+    result = [{'title': t[1], 'content': t[2], 'keyword': keyword} for t in page_data]
     #返回数据处理
-    data['total']=len(info_data)
+    data['total']=length
     data['success']=True
     data['data']=result
     print(data)
     return  jsonify(data)
-
-@app.route(APIPrefix+url_admin_info_op+'/' ,methods=['GET','POST'])
+@app.route(APIPrefix+url_admin_info_op,methods=['GET','POST'])
 def op_info():
-    page = request.args.get('page')
-    size = request.args.get('size')
-    #返回数据模板
-    data = {
-    'page': page,
-    'size': size,
-    'pages': 0,
-    'total': 0,
-    'data': []
-}
-    #连接数据库
-    cur = db.connection.cursor()
-    #sql语句执行
-    cur.execute("SELECT info_id, title, content,create_time FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name ='{0}')".format(keyword))
-    #获取结果
-    info_data=cur.fetchall()
-    #分页查询的实现
-    offset=(int(page)-1)*int(size)
-    return 0
+    if request.method=='GET':
+        page = request.args.get('page')
+        size = request.args.get('size')
+        #返回数据模板
+        data = {
+        'page': page,
+        'size': size,
+        'pages': 0,
+        'total': 0,
+        'data': []
+    }
+        #连接数据库
+        cur = db.connection.cursor()
+        #长度
+        cur.execute("SELECT COUNT(*) FROM INFO")
+        length=cur.fetchall()
+        offset=(int(page)-1)*int(size)
+        limit=int(size)
+        #sql语句执行分页查询
+        cur.execute("SELECT i.info_id, i.user_id, i.title, i.content, i.create_time, i.info_status, u.username,t.tag_name FROM info AS i JOIN user AS u ON i.user_id = u.user_id JOIN tag AS t ON i.tag_id = t.tag_id order by i.info_id desc LIMIT {0} OFFSET {1};".format(limit,offset))
+        #获取结果
+        info_data=cur.fetchall()
+        result = [{'id': t[0], 'title': t[3], 'keyword': t[7],'author':t[6],'create_time':t[4],'status':t[5]} for t in info_data]
+        data['total']=length
+        data['success']=True
+        data['data']=result
+        return jsonify(data)
+    elif request.method=='POST':
+        data=request.json
+        id=data.get('id')
+        newstatus=data.get('newstatus')
+        print(id,newstatus)
+        redata={
+            'message':''
+        }
+        cur=db.connection.cursor()
+        cur.execute("UPDATE info SET info_status = {0} WHERE info_id = {1}".format(newstatus,id))
+        db.connection.commit()
+        cur.close()
+        txt='正常' if newstatus == 0 else'封禁'
+        redata['message']='ID:{0}的信息现已修改为{1}状态'.format(id,txt)
+        redata['success']=True
+        return jsonify(redata)
 @app.route(APIPrefix+url_user_login,methods=['POST'])
 def login():
     if request.method == 'POST':  # 判断是否是 POST 请求
@@ -109,6 +137,9 @@ def login():
                     user_data['success']=True
                     user_data['islogin']=True
                     user_data['message']='登陆成功'
+                    session['id']=user_info[1]
+                    print(session.get('id'))
+                    session.permanent=True
                     return jsonify(user_data)
                 else:
                     user_data['successs']=False
@@ -132,12 +163,36 @@ def login():
                     user_data['success']=False
                     user_data['message']='插入用户失败'
                     return jsonify(user_data)
+@app.route(APIPrefix+url_submit_info,methods=['POST'])
+def submit_info():
+    print(session.get('id'))
+    data=request.json
+    cur=db.connection.cursor()
+    print(data['userId'],data['title'],data['content'],data['tagId'])
+    cur.execute("INSERT into info(user_id,title,content,tag_id) value({0},'{1}','{2}',{3});".format(data['userId'],data['title'],data['content'],data['tagId']))
+    db.connection.commit()
+    cur.close()
+    return jsonify({'message':'信息发布成功'})
+@app.route(APIPrefix+url_login_status,methods=['GET'])
+def login_status():
+    data={
+        'islogin':False
+    }
+    if session.get('id')!=None:
+        print(session.get('id'))
+        data['id']=session.get('id')
+        data['islogin']=True
+        return jsonify(data)
+    else:
+        print('fail')
+        return jsonify(data)
 def check_user_exists(phone):
     # 查询数据库，检查手机号是否已存在,存在则返回密码,id,名字
     try:
         cur = db.connection.cursor()
         cur.execute("SELECT user_password,user_id,username, account_status FROM User WHERE phone = '{0}';".format(phone))
         result = cur.fetchone()
+        cur.close()
         return result
     except Exception as e:
         print("Error checking user:", e)

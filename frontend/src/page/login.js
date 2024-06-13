@@ -30,9 +30,9 @@ function LoginPage()  {
             console.log(response)
             if (response.success == true) {
                 
-                console.log(response.message);
+                alert(response.message);
             } else {
-                console.log(response.message)
+                alert(response.message)
             }
         } catch (error) {
             console.error('Error during login:', error);

@@ -2,7 +2,7 @@ import HttpUtill from '../utills/HttpUtill'
 import ApiUtill from '../utills/ApiUtill'
 import { useState ,useEffect,jsonify} from 'react'
 
-export default function App_Info_list({pagenation,setter,url}){//功能的组装
+export default function App_Info_list({pagenation,setter}){//功能的组装
     useEffect(()=>{//依赖于keyword,size,page
         async function requestdata(){
             const result=await HttpUtill.get(ApiUtill.url_tag_search+'?'+'keyword='+pagenation.keyword+'&size='+pagenation.size+'&page='+pagenation.page)

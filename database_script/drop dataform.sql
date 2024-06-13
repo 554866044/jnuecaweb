@@ -1,2 +1,2 @@
 use jnueca;
-drop table User;
+drop table info;

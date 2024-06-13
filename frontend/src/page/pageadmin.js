@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from'react';
 import { Helmet } from 'react-helmet';
+import HttpUtill from '../utills/HttpUtill';
+import ApiUtill from '../utills/ApiUtill';
+import SearchPagination from '../components/searchpagnition';
 function SidebarMenuItem({ text, onClick }) {
   return (
     <div className="menu-item" onClick={onClick}>
@@ -8,7 +11,8 @@ function SidebarMenuItem({ text, onClick }) {
   );
 }
 
-function Table({ id, headers, data }) {
+function Table({id,headers,data}) {
+  console.log(data)
   return (
     <table id={id}>
       <thead>
@@ -22,12 +26,14 @@ function Table({ id, headers, data }) {
         {data.map(item => (
           <tr key={item.id}>
             <td>{item.id}</td>
-            <td>{item.title || item.username}</td>
-            <td>{item.author || item.iphone}</td>
-            <td>{item.publishTime || item.registerTime}</td>
-            <td>{item.status}</td>
+            <td>{item.title}</td>
+            <td>{item.keyword}</td>
+            <td>{item.author}</td>
+            <td>{item.create_time}</td>
+            <Judge_status status={item.status}/>
             <td>
-              <button onClick={() => console.log('编辑')}>编辑</button>
+              <button onClick={() => handleStatuschange(item.id,0)}>正常化</button>
+              <button onClick={()=>handleStatuschange(item.id,1)}>封禁</button>
             </td>
           </tr>
         ))}
@@ -35,30 +41,68 @@ function Table({ id, headers, data }) {
     </table>
   );
 }
+const handleStatuschange=async(id,newstatus)=>{
+  const response=await HttpUtill.post(ApiUtill.url_admin_info_op,{'id':id,'newstatus':newstatus})
+  if (response.success){
+    alert(response.message)
+    return true
+  }
+  else{
+    alert('无法联系至服务器')
+  }
+}
 
+function Judge_status({status}){
+  if (status === 0){
+    return(<td className='status_green'>正常</td>)}
+  else{
+    return(<td className='status_red'  style={{ backgroundColor: 'salmon' }}>封禁</td>)
+  }
+}
 function ManagementPage() {
+  const [pagination,setpagination]=useState({
+  page:1,
+  size:5,
+
+  pages:0,
+  total:0,
+  data:[]})
+  const[pagenationuser,setpaginationuser]=useState(
+    {
+      page:1,
+      size:5,
+    
+      pages:0,
+      total:0,
+      data:[]}
+  )
   const [activeTable, setActiveTable] = useState('posts');
   const [postsData, setPostsData] = useState([]);
   const [usersData, setUsersData] = useState([]);
-
   useEffect(() => {
-    // 模拟获取帖子数据
-    fetch('/api/posts')
-    .then(response => response.json())
-    .then(data => setPostsData(data));
-
+    async function requestdata(){
+      const infodata=await HttpUtill.get(ApiUtill.url_admin_info_op+'?'+'&size='+pagination.size+'&page='+pagination.page)
+      setpagination(infodata)
+      setPostsData(infodata.data)
+    }
+    requestdata()
+    // 获取帖子数据
     // 模拟获取用户数据
     fetch('/api/users')
     .then(response => response.json())
     .then(data => setUsersData(data));
-  }, []);
+  }, [pagination.page]);
+
 
   const handleMenuItemClick = (tableId) => {
     setActiveTable(tableId);
   };
-
+console.log(2)
   return (
     <>
+    <Helmet>
+      <link rel="stylesheet" href="/static/css/index.css" />
+    </Helmet>
     <div>
       <div className="sidebar">
         <SidebarMenuItem text="帖子管理" onClick={() => handleMenuItemClick('posts')} />
@@ -66,23 +110,30 @@ function ManagementPage() {
       </div>
       <div className="content">
         {activeTable === 'posts' && (
+          <>
           <Table
             id="posts-table"
-            headers={['ID', '标题', '作者', '发布时间', '状态', '操作']}
+            headers={['ID', '标题','分类', '作者', '发布时间', '状态', '操作']}
             data={postsData}
           />
+          <SearchPagination pagination={pagination} setter={setpagination}/>
+          </>
+          
         )}
-        {activeTable === 'users' && (
+        {activeTable === 'Users' && (
+          <>
           <Table
             id="users-table"
-            headers={['ID', '用户名', '手机', '邮箱', '注册时间', '状态', '操作']}
-            data={usersData}
+            headers={['ID', '标题','分类', '作者', '发布时间', '状态', '操作']}
+            data={postsData}
           />
+          <SearchPagination pagination={pagination} setter={setpagination}/>
+          </>
+          
         )}
       </div>
     </div>
     </>
   );
 }
-
 export default ManagementPage;

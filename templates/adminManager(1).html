@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>管理界面</title>
+    <!--Google Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        /* 简单的CSS样式 */
+        .sidebar {
+            width: 200px;
+            float: left;
+        {#padding-right: 50px;#} padding-bottom: 50px;
+            padding-left: 50px;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 10px;
+        }
+
+        .menu-item {
+            padding: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            text-align: center;
+
+        }
+
+        .menu-item.active {
+            background-color: #337ab7;
+            color: white;
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        {#th {#}
+        {#    background-color: #f2f2f2;#}
+        {
+        #}#}
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="menu-item" onclick="showTable('posts')">帖子管理</div>
+    <div class="menu-item" onclick="showTable('users')">用户管理</div>
+</div>
+
+<div class="content" style="margin-top: 100px;">
+    <table id="posts-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>标题</th>
+            <th>作者</th>
+            <th>发布时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 帖子数据行 -->
+        </tbody>
+    </table>
+
+    <table id="users-table" style="display: none">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>用户名</th>
+            <th>手机</th>
+            <th>邮箱</th>
+            <th>注册时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 用户数据行 -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function showTable(tableId) {
+        var tables = document.querySelectorAll('.content table');
+        tables.forEach(function (table) {
+            table.style.display = 'none';
+        });
+        var activeTable = document.getElementById(tableId + '-table');
+        activeTable.style.display = 'table';
+
+        // 清空现有的表格内容
+        activeTable.querySelector('tbody').innerHTML = '';
+
+        // 根据表格ID获取对应的数据
+        if (tableId === 'posts') {
+            fetchPostsData('/api/posts', activeTable);
+        } else if (tableId === 'users') {
+            fetchUserData('/api/users', activeTable);
+        }
+
+        // 更新菜单项的样式
+        var menuItems = document.querySelectorAll('.sidebar .menu-item');
+        menuItems.forEach(function (item) {
+            item.classList.remove('active');
+        });
+        event.target.classList.add('active');
+    }
+
+    function fetchUserData(url, table) {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 处理数据并更新表格
+                data.forEach(item => {
+                    var row = `<tr>
+                        <td>${item.id}</td>
+                        <td>${item.username}</td>
+                        <td>${item.iphone}</td>
+                        <td>${item.email}</td>
+                        <td>${item.registerTime}</td>
+                        <td>${item.status}</td>
+                        <td><button onclick="editRow(${item.id})">禁言</button></td>
+                    </tr>`;
+                    table.querySelector('tbody').innerHTML += row;
+                });
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
+
+
+    function fetchPostsData(url, table) {
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 处理数据并更新表格
+                data.forEach(item => {
+                    var row = `<tr>
+                        <td>${item.id}</td>
+                        <td>${item.title}</td>
+                        <td>${item.author}</td>
+                        <td>${item.publishTime}</td>
+                        <td>${item.status}</td>
+                        <td><button onclick="editRow(${item.id})">删除</button></td>
+                    </tr>`;
+                    table.querySelector('tbody').innerHTML += row;
+                });
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
+
+    // 页面加载时默认显示帖子管理表格
+    document.addEventListener('DOMContentLoaded', function () {
+        showTable('posts');
+    });
+</script>
+
+
+</body>
+</html>

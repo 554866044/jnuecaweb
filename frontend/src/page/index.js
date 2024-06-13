@@ -64,7 +64,7 @@ export default function Index() {
         <header>
           <h2>暨南大学电子商务协会论坛</h2>
           <p>
-            忠信笃敬
+            激发成员潜能，共创电协未来
             <br />
           </p>
         </header>
@@ -176,8 +176,8 @@ export default function Index() {
     <section id="four" className="wrapper style1 special fade-up">
       <div className="container">
         <header className="major">
-          <h2>1111</h2>
-          <p>1111</p>
+          <h2>开发成员</h2>
+          <p>选择你的捍卫者</p>
         </header>
         <div className="box alt">
           <div className="row uniform">
@@ -189,13 +189,13 @@ export default function Index() {
                     alt=""
                   />
                   <div className="hobby_img_info">
-                    <h1>11</h1>
-                    <h2>1111</h2>
+                    <h1>wuhu</h1>
+                    <h2>超级爆肝</h2>
                   </div>
                 </span>
               </div>
-              <h3 style={{ textAlign: "center" }}>CG</h3>
-              <p>11111111111111</p>
+              <h3 style={{ textAlign: "center" }}>WUHU</h3>
+              <p>全栈---我一人，即是千军万马!!!!</p>
             </section>
             <section className="4u 6u$(medium) 12u$(xsmall)">
               <div className="fa_icon">
@@ -205,13 +205,13 @@ export default function Index() {
                     alt=""
                   />
                   <div className="hobby_img_info">
-                    <h1>1111</h1>
-                    <h2>111111</h2>
+                    <h1>zsy</h1>
+                    <h2>前端---</h2>
                   </div>
                 </span>
               </div>
-              <h3 style={{ textAlign: "center" }}>ACG</h3>
-              <p>111111111111！</p>
+              <h3 style={{ textAlign: "center" }}></h3>
+              <p></p>
             </section>
             <section className="4u$ 6u(medium) 12u$(xsmall)">
               <div className="fa_icon">
@@ -221,13 +221,13 @@ export default function Index() {
                     alt=""
                   />
                   <div className="hobby_img_info">
-                    <h1>11</h1>
-                    <h2>111</h2>
+                    <h1>Enid</h1>
+                    <h2>追逐光，成为光！</h2>
                   </div>
                 </span>
               </div>
-              <h3 style={{ textAlign: "center" }}>111</h3>
-              <p>111111111111111。</p>
+              <h3 style={{ textAlign: "center" }}>陌默</h3>
+              <p>我与成长至死方休！！</p>
             </section>
           </div>
         </div>

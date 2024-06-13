@@ -5,6 +5,7 @@ import Tag_select from '../components/tag_select'
 import App_Info_list from '../components/info_list'
 import Searchpagination from '../components/searchpagnition'
 import { Helmet } from 'react-helmet'
+import PostForm from '../components/submitinfo'
 function Forum({pagenation,setter}){
     return(<>
         <div className='container'>
@@ -18,6 +19,9 @@ function Forum({pagenation,setter}){
                 <div className='col-lg-4'>
                     <div className='row g-4'>
                         <Tag_select pagenation={pagenation} setter={setter}/>
+                        <div className='col-sm-6 col-lg-12'>
+                            <PostForm/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -30,8 +34,6 @@ export default function App_Forum(){
         keyword:'',
         page:1,
         size:5,
-
-        pages:0,
         total:0,
         data:[]
     })  
