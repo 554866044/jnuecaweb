@@ -127,11 +127,14 @@ def login():
             # 连接数据库
             cur = db.connection.cursor()
             #查询用户是否在数据库中
+            print("check if the user has already signed up:{0}, this is user's phone num".format(phone))
             user_info=check_user_exists(phone=phone)
             print(user_info)
             if user_info:
+                print("user all ready exists")
                 db_password = user_info[0]
                 if password == db_password:
+                    print("password correct! password:{0} , check it".format(password))
                     user={'user_id':user_info[1],'username':user_info[2],'account_status':user_info[3]}
                     user_data['user_data']=user
                     user_data['success']=True
@@ -148,8 +151,9 @@ def login():
             else:
                 # 插入新用户
                 try:
+                    print("inserting new user, phone number:{0}".format(phone))
                     cur = db.connection.cursor()
-                    cur.execute("INSERT INTO user (phone, user_password) VALUES ({0}, {1});".format(phone,password))
+                    cur.execute("INSERT INTO user (phone, user_password) VALUES ({0}, '{1}');".format(phone,password))
                     db.connection.commit()
                     cur.close()
                     #返回数据组装
