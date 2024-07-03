@@ -30,10 +30,16 @@ pip install -r requirements.txt
 ```
 ```commandline
 # 链接数据库
-# 安装请自行安装吧
-# 请在app.py中修改数据库连接信息
+## 安装请自行安装吧
+## 若是第一次在本地运行项目，还需要在数据库中创建数据库和表，请连接到数据库后执行
+SOURCE /database_script/setup_database.sql;
+
+# 在app.py中修改数据库连接信息
+app.config['MYSQL_PASSWORD'] = os.getenv("db_password", "root") # MySQL密码
+
 # 如果怕自己的数据库密码硬编码，可以用.env文件存储密码，已适配环境变量读取
-# .env文件在项目根目录下，格式为： db_password=[your_password]
+# .env文件在项目根目录下，格式为： 
+db_password=[your_password]
 ```
 ```commandline
 # 运行后端
