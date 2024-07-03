@@ -7,7 +7,7 @@ const PostForm = () => {
     });
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [tagId, setTagId] = useState('');
+    const [tagId, setTagId] = useState('1');
 
     // 向后端请求用户登录信息
     useEffect(() => {

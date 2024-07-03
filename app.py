@@ -117,7 +117,7 @@ def op_info():
         db.connection.commit()
         cur.close()
         txt='正常' if newstatus == 0 else'封禁'
-        redata['message']='ID:%s的信息现已修改为%s状态'.format(id,txt)
+        redata['message']='ID:{0}的信息现已修改为{1}状态'.format(id,txt)
         redata['success']=True
         return jsonify(redata)
 @app.route(APIPrefix+url_user_login,methods=['POST'])

@@ -12,6 +12,14 @@
   - app.py (程序主页)
   - README.md
 
+## TODO
+- [x] 留言板前端页面
+- [x] Blog-detialed pages
+- [x] blog edit pages
+- [x] About page 
+- [x] sign in cookie and personal profile
+
+
 ## Usage
 
 ```commandline
