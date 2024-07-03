@@ -55,13 +55,13 @@ def Tag_search():
     cur = db.connection.cursor()
     print(keyword)
     #sql语句执行
-    cur.execute("SELECT COUNT(CASE WHEN info_status = 1 THEN NULL ELSE 1 END) AS total FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '{0}');".format(keyword))
+    cur.execute("SELECT COUNT(CASE WHEN info_status = 1 THEN NULL ELSE 1 END) AS total FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = %s);", (keyword))
     #获取长度结果
     length=cur.fetchone()[0]
     #分页查询的实现
     offset=(int(page)-1)*int(size)
     limit=int(size)
-    cur.execute("SELECT * FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = '{0}')AND info_status = 0 LIMIT {1} OFFSET {2};".format(keyword,limit,offset))
+    cur.execute("SELECT * FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = %s)AND info_status = 0 LIMIT %s OFFSET %s;", (keyword,limit,offset))
     #数据处理
     page_data=cur.fetchall()
     cur.close()
@@ -93,7 +93,7 @@ def op_info():
         offset=(int(page)-1)*int(size)
         limit=int(size)
         #sql语句执行分页查询
-        cur.execute("SELECT i.info_id, i.user_id, i.title, i.content, i.create_time, i.info_status, u.username,t.tag_name FROM info AS i JOIN user AS u ON i.user_id = u.user_id JOIN tag AS t ON i.tag_id = t.tag_id order by i.info_id desc LIMIT {0} OFFSET {1};".format(limit,offset))
+        cur.execute("SELECT i.info_id, i.user_id, i.title, i.content, i.create_time, i.info_status, u.username,t.tag_name FROM info AS i JOIN user AS u ON i.user_id = u.user_id JOIN tag AS t ON i.tag_id = t.tag_id order by i.info_id desc LIMIT %s OFFSET %s;", (limit,offset))
         #获取结果
         info_data=cur.fetchall()
         result = [{'id': t[0], 'title': t[3], 'keyword': t[7],'author':t[6],'create_time':t[4],'status':t[5]} for t in info_data]
@@ -110,11 +110,11 @@ def op_info():
             'message':''
         }
         cur=db.connection.cursor()
-        cur.execute("UPDATE info SET info_status = {0} WHERE info_id = {1}".format(newstatus,id))
+        cur.execute("UPDATE info SET info_status = %s WHERE info_id = %s", (newstatus,id))
         db.connection.commit()
         cur.close()
         txt='正常' if newstatus == 0 else'封禁'
-        redata['message']='ID:{0}的信息现已修改为{1}状态'.format(id,txt)
+        redata['message']='ID:%s的信息现已修改为%s状态'.format(id,txt)
         redata['success']=True
         return jsonify(redata)
 @app.route(APIPrefix+url_user_login,methods=['POST'])
@@ -127,14 +127,14 @@ def login():
             # 连接数据库
             cur = db.connection.cursor()
             #查询用户是否在数据库中
-            print("check if the user has already signed up:{0}, this is user's phone num".format(phone))
+            print("check if the user has already signed up:%s, this is user's phone num".format(phone))
             user_info=check_user_exists(phone=phone)
             print(user_info)
             if user_info:
                 print("user all ready exists")
                 db_password = user_info[0]
                 if password == db_password:
-                    print("password correct! password:{0} , check it".format(password))
+                    print("password correct! password:%s , check it".format(password))
                     user={'user_id':user_info[1],'username':user_info[2],'account_status':user_info[3]}
                     user_data['user_data']=user
                     user_data['success']=True
@@ -151,9 +151,10 @@ def login():
             else:
                 # 插入新用户
                 try:
-                    print("inserting new user, phone number:{0}".format(phone))
+                    print("inserting new user, phone number:%s".format(phone))
                     cur = db.connection.cursor()
-                    cur.execute("INSERT INTO user (phone, user_password) VALUES ({0}, '{1}');".format(phone,password))
+                    cur.execute("INSERT INTO user (phone, user_password) VALUES (%s, '%s');", (phone,password))
+                    # 改为不容易被sql注入的版本
                     db.connection.commit()
                     cur.close()
                     #返回数据组装
@@ -173,7 +174,7 @@ def submit_info():
     data=request.json
     cur=db.connection.cursor()
     print(data['userId'],data['title'],data['content'],data['tagId'])
-    cur.execute("INSERT into info(user_id,title,content,tag_id) value({0},'{1}','{2}',{3});".format(data['userId'],data['title'],data['content'],data['tagId']))
+    cur.execute("INSERT into info(user_id,title,content,tag_id) value(%s,'%s','%s',%s);", (data['userId'],data['title'],data['content'],data['tagId']))
     db.connection.commit()
     cur.close()
     return jsonify({'message':'信息发布成功'})
@@ -194,7 +195,7 @@ def check_user_exists(phone):
     # 查询数据库，检查手机号是否已存在,存在则返回密码,id,名字
     try:
         cur = db.connection.cursor()
-        cur.execute("SELECT user_password,user_id,username, account_status FROM User WHERE phone = '{0}';".format(phone))
+        cur.execute("SELECT user_password,user_id,username, account_status FROM User WHERE phone = '%s';", (phone))
         result = cur.fetchone()
         cur.close()
         return result
