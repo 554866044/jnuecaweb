@@ -1,3 +1,6 @@
+import os
+import dotenv
+dotenv.load_dotenv()
 from flask import Flask,session,Response,jsonify
 from flask import request
 from flask_mysqldb import MySQL
@@ -12,7 +15,7 @@ CORS(app,supports_credentials=True)#跨域访问
 
 app.config['MYSQL_HOST'] = 'localhost' # MySQL主机地址
 app.config['MYSQL_USER'] = 'root' # MySQL用户名
-app.config['MYSQL_PASSWORD'] = 'root' # MySQL密码
+app.config['MYSQL_PASSWORD'] = os.getenv("db_password", "root") # MySQL密码
 app.config['MYSQL_DB'] = 'jnueca' # MySQL数据库名
 
 app.config["SECRET_KEY"]=secrets.token_hex(16)
@@ -55,7 +58,7 @@ def Tag_search():
     cur = db.connection.cursor()
     print(keyword)
     #sql语句执行
-    cur.execute("SELECT COUNT(CASE WHEN info_status = 1 THEN NULL ELSE 1 END) AS total FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = %s);", (keyword))
+    cur.execute("SELECT COUNT(CASE WHEN info_status = 1 THEN NULL ELSE 1 END) AS total FROM info WHERE tag_id IN (SELECT tag_id FROM tag WHERE tag_name = %s);", (keyword,))
     #获取长度结果
     length=cur.fetchone()[0]
     #分页查询的实现
@@ -123,18 +126,19 @@ def login():
             user_data=request.json
             phone = user_data.get('phone')
             password = user_data.get('password')
+            print("get json data", user_data)
             print(phone,password)
             # 连接数据库
             cur = db.connection.cursor()
             #查询用户是否在数据库中
-            print("check if the user has already signed up:%s, this is user's phone num".format(phone))
+            print("check if the user has already signed up:{0}, this is user's phone num".format(phone))
             user_info=check_user_exists(phone=phone)
             print(user_info)
             if user_info:
                 print("user all ready exists")
                 db_password = user_info[0]
                 if password == db_password:
-                    print("password correct! password:%s , check it".format(password))
+                    print("password correct! password:{0} , check it".format(password))
                     user={'user_id':user_info[1],'username':user_info[2],'account_status':user_info[3]}
                     user_data['user_data']=user
                     user_data['success']=True
@@ -151,9 +155,9 @@ def login():
             else:
                 # 插入新用户
                 try:
-                    print("inserting new user, phone number:%s".format(phone))
+                    print("inserting new user, phone number:{0}".format(phone))
                     cur = db.connection.cursor()
-                    cur.execute("INSERT INTO user (phone, user_password) VALUES (%s, '%s');", (phone,password))
+                    cur.execute("INSERT INTO user (phone, user_password) VALUES (%s, %s);", (phone,password))
                     # 改为不容易被sql注入的版本
                     db.connection.commit()
                     cur.close()
@@ -173,8 +177,8 @@ def submit_info():
     print(session.get('id'))
     data=request.json
     cur=db.connection.cursor()
-    print(data['userId'],data['title'],data['content'],data['tagId'])
-    cur.execute("INSERT into info(user_id,title,content,tag_id) value(%s,'%s','%s',%s);", (data['userId'],data['title'],data['content'],data['tagId']))
+    print("4 datas here:", data['userId'],data['title'],data['content'],data['tagId'])
+    cur.execute("INSERT into info(user_id,title,content,tag_id) value(%s,%s,%s,%s);", (data['userId'],data['title'],data['content'],data['tagId']))
     db.connection.commit()
     cur.close()
     return jsonify({'message':'信息发布成功'})
@@ -195,7 +199,7 @@ def check_user_exists(phone):
     # 查询数据库，检查手机号是否已存在,存在则返回密码,id,名字
     try:
         cur = db.connection.cursor()
-        cur.execute("SELECT user_password,user_id,username, account_status FROM User WHERE phone = '%s';", (phone))
+        cur.execute("SELECT user_password,user_id,username, account_status FROM User WHERE phone = %s;", (phone,))
         result = cur.fetchone()
         cur.close()
         return result
